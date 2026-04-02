@@ -1,0 +1,33 @@
+# Smart Money Intelligence Platform - Requirements
+# Python 3.8+ required
+
+# Data Collection and Processing
+pandas==2.3.3
+numpy==2.4.2
+yfinance==1.2.0
+
+# Machine Learning
+scikit-learn==1.8.0
+xgboost==3.2.0
+joblib==1.5.3
+
+# Data Visualization
+matplotlib==3.10.8
+seaborn==0.13.2
+plotly==6.6.0
+
+# Dashboard
+streamlit==1.55.0
+
+# Property-Based Testing
+hypothesis==6.151.9
+
+# Testing
+pytest==9.0.2
+
+# Database
+SQLAlchemy==2.0.48
+
+# Utilities
+python-dateutil==2.9.0.post0
+requests==2.32.5
