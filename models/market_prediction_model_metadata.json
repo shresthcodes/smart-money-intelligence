@@ -1,0 +1,37 @@
+{
+  "model_type": "xgboost",
+  "training_date": "2026-04-02",
+  "features": [
+    "FII_Net",
+    "DII_Net",
+    "Daily_Return_Lag1",
+    "Daily_Return_Lag2",
+    "Daily_Return_Lag3",
+    "Volatility",
+    "Momentum",
+    "FII_Net_MA5",
+    "FII_Net_MA10",
+    "FII_Net_MA20",
+    "DII_Net_MA5",
+    "DII_Net_MA10",
+    "DII_Net_MA20",
+    "FII_Net_Lag1",
+    "FII_Net_Lag2",
+    "FII_Net_Lag3",
+    "DII_Net_Lag1",
+    "DII_Net_Lag2",
+    "DII_Net_Lag3"
+  ],
+  "performance": {
+    "accuracy": 0.49795918367346936,
+    "precision": 0.5123456790123457,
+    "recall": 0.6535433070866141,
+    "f1_score": 0.5743944636678201
+  },
+  "training_samples": 978,
+  "test_samples": 245,
+  "data_date_range": {
+    "start": "2021-04-20 00:00:00",
+    "end": "2026-03-30 00:00:00"
+  }
+}
