@@ -24,12 +24,12 @@ from utils.visualizations import (
 # Configure page
 st.set_page_config(
     page_title="Market Overview - Smart Money Intelligence",
-    page_icon="📈",
+    page_icon=None,
     layout="wide"
 )
 
 # Page header
-st.title("📈 Market Overview")
+st.title("Market Overview")
 st.markdown("---")
 
 # Load data
@@ -37,8 +37,8 @@ with st.spinner("Loading market data..."):
     df = load_latest_data()
 
 if df is None or df.empty:
-    st.error("❌ Unable to load market data. Please ensure the data pipeline has been run.")
-    st.info("💡 Run `python scripts/run_pipeline.py` to generate processed data.")
+    st.error("Unable to load market data. Please ensure the data pipeline has been run.")
+    st.info("Run `python scripts/run_pipeline.py` to generate processed data.")
     st.stop()
 
 # Ensure Date column is datetime
@@ -47,7 +47,7 @@ if 'Date' in df.columns:
     df = df.sort_values('Date')
 
 # Date range selector in sidebar
-st.sidebar.header("📅 Date Range Filter")
+st.sidebar.header("Date Range Filter")
 
 # Get min and max dates
 min_date = df['Date'].min().date()
@@ -73,7 +73,7 @@ end_date = st.sidebar.date_input(
 
 # Validate date range
 if start_date > end_date:
-    st.sidebar.error("❌ Start date must be before end date!")
+    st.sidebar.error("Start date must be before end date!")
     st.stop()
 
 # Filter data by date range
@@ -83,15 +83,15 @@ df_filtered = df[
 ].copy()
 
 if df_filtered.empty:
-    st.warning("⚠️ No data available for the selected date range. Please adjust the dates.")
+    st.warning("No data available for the selected date range. Please adjust the dates.")
     st.stop()
 
 # Display date range info
-st.sidebar.success(f"✅ Showing data from {start_date} to {end_date}")
-st.sidebar.info(f"📊 Total trading days: {len(df_filtered)}")
+st.sidebar.success(f"Showing data from {start_date} to {end_date}")
+st.sidebar.info(f"Total trading days: {len(df_filtered)}")
 
 # Key Statistics Section
-st.header("📊 Key Market Statistics")
+st.header("Key Market Statistics")
 
 # Calculate statistics
 current_price = df_filtered['Close'].iloc[-1]
@@ -176,7 +176,7 @@ with col8:
 st.markdown("---")
 
 # NIFTY Trend Chart
-st.header("📈 NIFTY Index Trend")
+st.header("NIFTY Index Trend")
 
 # Create the trend chart
 fig_trend = plot_nifty_trend(
@@ -189,23 +189,23 @@ fig_trend = plot_nifty_trend(
 st.plotly_chart(fig_trend, use_container_width=True)
 
 # Add insights below the chart
-with st.expander("📊 Trend Analysis Insights"):
+with st.expander("Trend Analysis Insights"):
     # Calculate trend statistics
     price_change = current_price - previous_price
     price_change_pct = ytd_return
     
     # Determine trend
     if price_change_pct > 5:
-        trend = "📈 **Strong Uptrend**"
+        trend = "**Strong Uptrend**"
         trend_color = "green"
     elif price_change_pct > 0:
-        trend = "📊 **Mild Uptrend**"
+        trend = "**Mild Uptrend**"
         trend_color = "lightgreen"
     elif price_change_pct > -5:
-        trend = "📉 **Mild Downtrend**"
+        trend = "**Mild Downtrend**"
         trend_color = "orange"
     else:
-        trend = "📉 **Strong Downtrend**"
+        trend = "**Strong Downtrend**"
         trend_color = "red"
     
     st.markdown(f"**Overall Trend:** {trend}")
@@ -217,7 +217,7 @@ with st.expander("📊 Trend Analysis Insights"):
 st.markdown("---")
 
 # Volatility Analysis
-st.header("📊 Volatility Analysis")
+st.header("Volatility Analysis")
 
 if 'Volatility' in df_filtered.columns:
     # Create volatility trend chart
@@ -231,7 +231,7 @@ if 'Volatility' in df_filtered.columns:
     st.plotly_chart(fig_volatility, use_container_width=True)
     
     # Volatility statistics
-    with st.expander("📈 Volatility Insights"):
+    with st.expander("Volatility Insights"):
         avg_volatility = df_filtered['Volatility'].mean()
         max_volatility = df_filtered['Volatility'].max()
         min_volatility = df_filtered['Volatility'].min()
@@ -246,18 +246,18 @@ if 'Volatility' in df_filtered.columns:
         
         # Volatility assessment
         if current_volatility > avg_volatility * 1.5:
-            st.warning("⚠️ **High Volatility Alert:** Current volatility is significantly above average. Market is experiencing increased uncertainty.")
+            st.warning("High Volatility Alert: Current volatility is significantly above average. Market is experiencing increased uncertainty.")
         elif current_volatility < avg_volatility * 0.5:
-            st.info("ℹ️ **Low Volatility:** Market is relatively calm with below-average volatility.")
+            st.info("Low Volatility: Market is relatively calm with below-average volatility.")
         else:
-            st.success("✅ **Normal Volatility:** Current volatility is within normal range.")
+            st.success("Normal Volatility: Current volatility is within normal range.")
 else:
-    st.warning("⚠️ Volatility data not available in the dataset.")
+    st.warning("Volatility data not available in the dataset.")
 
 st.markdown("---")
 
 # Return Distribution
-st.header("📊 Return Distribution Analysis")
+st.header("Return Distribution Analysis")
 
 if 'Daily_Return' in df_filtered.columns:
     # Create return distribution chart
@@ -270,7 +270,7 @@ if 'Daily_Return' in df_filtered.columns:
     st.plotly_chart(fig_distribution, use_container_width=True)
     
     # Return statistics
-    with st.expander("📈 Return Statistics"):
+    with st.expander("Return Statistics"):
         returns = df_filtered['Daily_Return'].dropna()
         
         mean_return = returns.mean()
@@ -303,17 +303,17 @@ if 'Daily_Return' in df_filtered.columns:
         st.markdown(f"- 25th Percentile: **{p25:.2f}%**")
         st.markdown(f"- 75th Percentile: **{p75:.2f}%**")
 else:
-    st.warning("⚠️ Daily return data not available in the dataset.")
+    st.warning("Daily return data not available in the dataset.")
 
 st.markdown("---")
 
 # Summary Section
-st.header("📋 Summary")
+st.header("Summary")
 
 summary_col1, summary_col2 = st.columns(2)
 
 with summary_col1:
-    st.markdown("### 🎯 Key Takeaways")
+    st.markdown("### Key Takeaways")
     st.markdown(f"""
     - **Market Direction:** {trend}
     - **Price Performance:** {price_change_pct:+.2f}% over the selected period
@@ -322,35 +322,35 @@ with summary_col1:
     """)
 
 with summary_col2:
-    st.markdown("### 💡 Market Insights")
+    st.markdown("### Market Insights")
     
     # Generate dynamic insights
     insights = []
     
     if price_change_pct > 10:
-        insights.append("🚀 Strong bullish momentum in the market")
+        insights.append("Strong bullish momentum in the market")
     elif price_change_pct < -10:
-        insights.append("📉 Significant bearish pressure observed")
+        insights.append("Significant bearish pressure observed")
     
     if current_volatility > avg_volatility * 1.5:
-        insights.append("⚠️ Elevated volatility suggests increased risk")
+        insights.append("Elevated volatility suggests increased risk")
     
     if positive_pct > 60:
-        insights.append("✅ Majority of trading days were positive")
+        insights.append("Majority of trading days were positive")
     elif positive_pct < 40:
-        insights.append("⚠️ Majority of trading days were negative")
+        insights.append("Majority of trading days were negative")
     
     if avg_return > 0.1:
-        insights.append("📈 Positive average daily returns indicate upward bias")
+        insights.append("Positive average daily returns indicate upward bias")
     elif avg_return < -0.1:
-        insights.append("📉 Negative average daily returns indicate downward bias")
+        insights.append("Negative average daily returns indicate downward bias")
     
     if insights:
         for insight in insights:
             st.markdown(f"- {insight}")
     else:
-        st.markdown("- 📊 Market showing balanced behavior")
-        st.markdown("- 📈 No extreme trends detected")
+        st.markdown("- Market showing balanced behavior")
+        st.markdown("- No extreme trends detected")
 
 # Footer
 st.markdown("---")

@@ -11,7 +11,7 @@ import streamlit as st
 # Configure the page
 st.set_page_config(
     page_title="Smart Money Intelligence Platform",
-    page_icon="📊",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -131,7 +131,7 @@ machine learning algorithms to predict market movements in the Indian equity mar
 """)
 
 # Main content area
-st.markdown('<div class="main-header">📊 Smart Money Intelligence Platform</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">Smart Money Intelligence Platform</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Track Institutional Investment Activity & Predict Market Movements</div>', unsafe_allow_html=True)
 
 # Welcome section
@@ -142,7 +142,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("""
     <div class="info-box">
-        <h3>📈 Market Analysis</h3>
+        <h3>Market Analysis</h3>
         <p>Comprehensive analysis of NIFTY index trends, volatility, and key market statistics.</p>
     </div>
     """, unsafe_allow_html=True)
@@ -150,7 +150,7 @@ with col1:
 with col2:
     st.markdown("""
     <div class="info-box">
-        <h3>🏢 Institutional Flows</h3>
+        <h3>Institutional Flows</h3>
         <p>Track FII and DII buying/selling patterns and their correlation with market movements.</p>
     </div>
     """, unsafe_allow_html=True)
@@ -158,14 +158,14 @@ with col2:
 with col3:
     st.markdown("""
     <div class="info-box">
-        <h3>🔮 ML Predictions</h3>
+        <h3>ML Predictions</h3>
         <p>Machine learning models predict next-day market direction with confidence scores.</p>
     </div>
     """, unsafe_allow_html=True)
 
 # Getting Started section
 st.markdown("---")
-st.header("🚀 Getting Started")
+st.header("Getting Started")
 
 st.markdown("""
 Welcome to the Smart Money Intelligence Platform! This dashboard helps you understand
@@ -180,11 +180,11 @@ how institutional investors (the "smart money") influence market movements.
 
 ### Key Features:
 
-- 📊 **Interactive Charts** - All visualizations are interactive using Plotly
-- 📈 **Real-time Analysis** - Data is processed and analyzed in real-time
-- 🤖 **ML Predictions** - Multiple models (Logistic Regression, Random Forest, XGBoost)
-- 🎯 **Trading Signals** - Rule-based signals combining ML predictions with technical indicators
-- 📉 **Historical Analysis** - Analyze patterns over multiple years of data
+- **Interactive Charts** - All visualizations are interactive using Plotly
+- **Real-time Analysis** - Data is processed and analyzed in real-time
+- **ML Predictions** - Multiple models (Logistic Regression, Random Forest, XGBoost)
+- **Trading Signals** - Rule-based signals combining ML predictions with technical indicators
+- **Historical Analysis** - Analyze patterns over multiple years of data
 
 ### Navigation:
 

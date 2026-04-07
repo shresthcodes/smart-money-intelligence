@@ -28,12 +28,12 @@ from signal_generator import generate_signal
 # Configure page
 st.set_page_config(
     page_title="Predictions - Smart Money Intelligence",
-    page_icon="🔮",
+    page_icon=None,
     layout="wide"
 )
 
 # Page header
-st.title("🔮 Market Predictions & Trading Signals")
+st.title("Market Predictions & Trading Signals")
 st.markdown("---")
 
 # Load data and model
@@ -43,13 +43,13 @@ with st.spinner("Loading data and model..."):
 
 # Check if data and model are loaded
 if df is None or df.empty:
-    st.error("❌ Unable to load market data. Please ensure the data pipeline has been run.")
-    st.info("💡 Run `python scripts/run_pipeline.py` to generate processed data.")
+    st.error("Unable to load market data. Please ensure the data pipeline has been run.")
+    st.info("Run `python scripts/run_pipeline.py` to generate processed data.")
     st.stop()
 
 if model_data is None:
-    st.error("❌ Unable to load trained model. Please ensure the model has been trained.")
-    st.info("💡 Run `python scripts/model_training.py` to train the model.")
+    st.error("Unable to load trained model. Please ensure the model has been trained.")
+    st.info("Run `python scripts/model_training.py` to train the model.")
     st.stop()
 
 # Extract model and metadata
@@ -128,7 +128,7 @@ except Exception as e:
 st.markdown("---")
 
 # Main Prediction Section
-st.header("🎯 Next-Day Market Direction Prediction")
+st.header("Next-Day Market Direction Prediction")
 
 # Create two columns for prediction display
 pred_col1, pred_col2 = st.columns([1, 1])
@@ -143,10 +143,10 @@ with pred_col1:
     
     # Prediction interpretation
     if ml_prediction == 1:
-        pred_text = "📈 **UP** (Bullish)"
+        pred_text = "**UP** (Bullish)"
         pred_color = "green"
     else:
-        pred_text = "📉 **DOWN** (Bearish)"
+        pred_text = "**DOWN** (Bearish)"
         pred_color = "red"
     
     st.markdown(f"### Predicted Direction: {pred_text}")
@@ -161,16 +161,16 @@ with pred_col2:
     
     # Signal display with color coding
     if signal == 'Bullish':
-        signal_emoji = "🟢"
+        signal_emoji = ""
         signal_color = "green"
     elif signal == 'Bearish':
-        signal_emoji = "🔴"
+        signal_emoji = ""
         signal_color = "red"
     else:
-        signal_emoji = "🟡"
+        signal_emoji = ""
         signal_color = "orange"
     
-    st.markdown(f"## {signal_emoji} **{signal}**")
+    st.markdown(f"## **{signal}**")
     st.markdown(f"**Signal Confidence:** {confidence * 100:.1f}%")
     
     # Display signal reasoning
@@ -183,12 +183,12 @@ with pred_col2:
 st.markdown("---")
 
 # Contributing Factors Section
-st.header("📊 Contributing Factors")
+st.header("Contributing Factors")
 
 factors_col1, factors_col2, factors_col3 = st.columns(3)
 
 with factors_col1:
-    st.markdown("### 🏢 Institutional Flows")
+    st.markdown("### Institutional Flows")
     fii_net = latest_data.get('FII_Net', 0)
     dii_net = latest_data.get('DII_Net', 0)
     
@@ -211,7 +211,7 @@ with factors_col1:
     )
 
 with factors_col2:
-    st.markdown("### 📈 Technical Indicators")
+    st.markdown("### Technical Indicators")
     momentum = latest_data.get('Momentum', 0)
     volatility = latest_data.get('Volatility', 0)
     
@@ -232,7 +232,7 @@ with factors_col2:
     )
 
 with factors_col3:
-    st.markdown("### 📊 Recent Performance")
+    st.markdown("### Recent Performance")
     daily_return_lag1 = latest_data.get('Daily_Return_Lag1', 0)
     
     # Recent return
@@ -255,7 +255,7 @@ with factors_col3:
 st.markdown("---")
 
 # Feature Importance Section
-st.header("🔍 Feature Importance Analysis")
+st.header("Feature Importance Analysis")
 
 # Check if model has feature_importances_ attribute
 if hasattr(model, 'feature_importances_'):
@@ -271,7 +271,7 @@ if hasattr(model, 'feature_importances_'):
     st.plotly_chart(fig_importance, use_container_width=True)
     
     # Display top features
-    with st.expander("📋 Top 5 Most Important Features"):
+    with st.expander("Top 5 Most Important Features"):
         # Sort features by importance
         importance_df = pd.DataFrame({
             'Feature': feature_cols,
@@ -299,7 +299,7 @@ else:
 st.markdown("---")
 
 # Model Performance Section
-st.header("📈 Model Performance Metrics")
+st.header("Model Performance Metrics")
 
 if metadata:
     perf_col1, perf_col2, perf_col3, perf_col4 = st.columns(4)
@@ -339,7 +339,7 @@ if metadata:
         )
     
     # Model details
-    with st.expander("🔧 Model Details"):
+    with st.expander("Model Details"):
         model_type = metadata.get('model_type', 'Unknown')
         training_date = metadata.get('training_date', 'Unknown')
         training_samples = metadata.get('training_samples', 0)
@@ -362,7 +362,7 @@ else:
 st.markdown("---")
 
 # Historical Accuracy Section (if available)
-st.header("📊 Historical Prediction Accuracy")
+st.header("Historical Prediction Accuracy")
 
 # Check if we have Target column to calculate historical accuracy
 if 'Target' in df.columns:
@@ -432,7 +432,7 @@ if 'Target' in df.columns:
                 )
         
         # Show recent predictions table
-        with st.expander("📋 Recent Predictions vs Actuals"):
+        with st.expander("Recent Predictions vs Actuals"):
             # Create comparison dataframe
             comparison_df = pd.DataFrame({
                 'Date': recent_df['Date'].dt.strftime('%Y-%m-%d'),
@@ -452,12 +452,12 @@ else:
 st.markdown("---")
 
 # Disclaimer and Recommendations
-st.header("⚠️ Important Notes")
+st.header("Important Notes")
 
 col_note1, col_note2 = st.columns(2)
 
 with col_note1:
-    st.markdown("### 📋 Disclaimer")
+    st.markdown("### Disclaimer")
     st.markdown("""
     - These predictions are generated by machine learning models for educational purposes
     - Past performance does not guarantee future results
@@ -467,7 +467,7 @@ with col_note1:
     """)
 
 with col_note2:
-    st.markdown("### 💡 How to Use These Predictions")
+    st.markdown("### How to Use These Predictions")
     st.markdown("""
     - Use predictions as one input among many for decision-making
     - Pay attention to signal confidence levels

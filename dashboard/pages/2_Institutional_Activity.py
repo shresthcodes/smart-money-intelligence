@@ -31,12 +31,12 @@ from insights_generator import detect_accumulation_periods, detect_selling_perio
 # Configure page
 st.set_page_config(
     page_title="Institutional Activity - Smart Money Intelligence",
-    page_icon="🏢",
+    page_icon=None,
     layout="wide"
 )
 
 # Page header
-st.title("🏢 Institutional Activity Analysis")
+st.title("Institutional Activity Analysis")
 st.markdown("Track FII and DII investment flows and their impact on market movements")
 st.markdown("---")
 
@@ -45,8 +45,8 @@ with st.spinner("Loading institutional activity data..."):
     df = load_latest_data()
 
 if df is None or df.empty:
-    st.error("❌ Unable to load institutional data. Please ensure the data pipeline has been run.")
-    st.info("💡 Run `python scripts/run_pipeline.py` to generate processed data.")
+    st.error("Unable to load institutional data. Please ensure the data pipeline has been run.")
+    st.info("Run `python scripts/run_pipeline.py` to generate processed data.")
     st.stop()
 
 # Ensure Date column is datetime
@@ -59,12 +59,12 @@ required_cols = ['FII_Net', 'DII_Net']
 missing_cols = [col for col in required_cols if col not in df.columns]
 
 if missing_cols:
-    st.error(f"❌ Missing required columns: {', '.join(missing_cols)}")
-    st.info("💡 Please ensure the preprocessing pipeline has computed net flows.")
+    st.error(f"Missing required columns: {', '.join(missing_cols)}")
+    st.info("Please ensure the preprocessing pipeline has computed net flows.")
     st.stop()
 
 # Date range selector in sidebar
-st.sidebar.header("📅 Date Range Filter")
+st.sidebar.header("Date Range Filter")
 
 # Get min and max dates
 min_date = df['Date'].min().date()
@@ -90,7 +90,7 @@ end_date = st.sidebar.date_input(
 
 # Validate date range
 if start_date > end_date:
-    st.sidebar.error("❌ Start date must be before end date!")
+    st.sidebar.error("Start date must be before end date!")
     st.stop()
 
 # Filter data by date range
@@ -100,15 +100,15 @@ df_filtered = df[
 ].copy()
 
 if df_filtered.empty:
-    st.warning("⚠️ No data available for the selected date range. Please adjust the dates.")
+    st.warning("No data available for the selected date range. Please adjust the dates.")
     st.stop()
 
 # Display date range info
-st.sidebar.success(f"✅ Showing data from {start_date} to {end_date}")
-st.sidebar.info(f"📊 Total trading days: {len(df_filtered)}")
+st.sidebar.success(f"Showing data from {start_date} to {end_date}")
+st.sidebar.info(f"Total trading days: {len(df_filtered)}")
 
 # Key Statistics Section
-st.header("📊 Institutional Flow Statistics")
+st.header("Institutional Flow Statistics")
 
 # Calculate statistics
 total_fii_net = df_filtered['FII_Net'].sum()
@@ -191,7 +191,7 @@ with col8:
 st.markdown("---")
 
 # FII vs DII Flows Comparison
-st.header("📈 FII vs DII Net Flows Comparison")
+st.header("FII vs DII Net Flows Comparison")
 
 # Create the flows comparison chart
 fig_flows = plot_institutional_flows(
@@ -205,44 +205,44 @@ fig_flows = plot_institutional_flows(
 st.plotly_chart(fig_flows, use_container_width=True)
 
 # Add insights below the chart
-with st.expander("📊 Flow Analysis Insights"):
+with st.expander("Flow Analysis Insights"):
     # Determine FII behavior
     if total_fii_net > 1000:
-        fii_behavior = "📈 **Strong Net Buyers** - FII showed significant buying interest"
+        fii_behavior = "**Strong Net Buyers** - FII showed significant buying interest"
     elif total_fii_net > 0:
-        fii_behavior = "📊 **Mild Net Buyers** - FII showed moderate buying interest"
+        fii_behavior = "**Mild Net Buyers** - FII showed moderate buying interest"
     elif total_fii_net > -1000:
-        fii_behavior = "📉 **Mild Net Sellers** - FII showed moderate selling pressure"
+        fii_behavior = "**Mild Net Sellers** - FII showed moderate selling pressure"
     else:
-        fii_behavior = "📉 **Strong Net Sellers** - FII showed significant selling pressure"
+        fii_behavior = "**Strong Net Sellers** - FII showed significant selling pressure"
     
     # Determine DII behavior
     if total_dii_net > 1000:
-        dii_behavior = "📈 **Strong Net Buyers** - DII showed significant buying interest"
+        dii_behavior = "**Strong Net Buyers** - DII showed significant buying interest"
     elif total_dii_net > 0:
-        dii_behavior = "📊 **Mild Net Buyers** - DII showed moderate buying interest"
+        dii_behavior = "**Mild Net Buyers** - DII showed moderate buying interest"
     elif total_dii_net > -1000:
-        dii_behavior = "📉 **Mild Net Sellers** - DII showed moderate selling pressure"
+        dii_behavior = "**Mild Net Sellers** - DII showed moderate selling pressure"
     else:
-        dii_behavior = "📉 **Strong Net Sellers** - DII showed significant selling pressure"
+        dii_behavior = "**Strong Net Sellers** - DII showed significant selling pressure"
     
     st.markdown(f"**FII Behavior:** {fii_behavior}")
     st.markdown(f"**DII Behavior:** {dii_behavior}")
     
     # Analyze relationship
     if (total_fii_net > 0 and total_dii_net < 0) or (total_fii_net < 0 and total_dii_net > 0):
-        st.markdown("**Relationship:** 🔄 **Divergent** - FII and DII showed opposite behavior (one buying, one selling)")
+        st.markdown("**Relationship:** **Divergent** - FII and DII showed opposite behavior (one buying, one selling)")
     elif abs(total_fii_net) > abs(total_dii_net) * 2:
-        st.markdown("**Relationship:** ⚖️ **FII Dominated** - FII flows significantly outweighed DII flows")
+        st.markdown("**Relationship:** **FII Dominated** - FII flows significantly outweighed DII flows")
     elif abs(total_dii_net) > abs(total_fii_net) * 2:
-        st.markdown("**Relationship:** ⚖️ **DII Dominated** - DII flows significantly outweighed FII flows")
+        st.markdown("**Relationship:** **DII Dominated** - DII flows significantly outweighed FII flows")
     else:
-        st.markdown("**Relationship:** 🤝 **Balanced** - FII and DII showed similar magnitude of flows")
+        st.markdown("**Relationship:** **Balanced** - FII and DII showed similar magnitude of flows")
 
 st.markdown("---")
 
 # Cumulative Flows Chart
-st.header("📊 Cumulative Institutional Flows")
+st.header("Cumulative Institutional Flows")
 
 # Create cumulative flows chart
 fig_cumulative = plot_cumulative_flows(
@@ -255,7 +255,7 @@ fig_cumulative = plot_cumulative_flows(
 
 st.plotly_chart(fig_cumulative, use_container_width=True)
 
-with st.expander("📈 Cumulative Flow Insights"):
+with st.expander("Cumulative Flow Insights"):
     st.markdown("""
     **Understanding Cumulative Flows:**
     
@@ -285,10 +285,10 @@ with st.expander("📈 Cumulative Flow Insights"):
 st.markdown("---")
 
 # Accumulation and Distribution Periods
-st.header("🎯 Accumulation & Distribution Periods")
+st.header("Accumulation & Distribution Periods")
 
 # Sidebar controls for period detection
-st.sidebar.header("⚙️ Period Detection Settings")
+st.sidebar.header("Period Detection Settings")
 window_size = st.sidebar.slider(
     "Minimum Consecutive Days",
     min_value=3,
@@ -350,10 +350,10 @@ with st.spinner("Detecting accumulation and distribution periods..."):
 
 # Display periods in tabs
 tab1, tab2, tab3, tab4 = st.tabs([
-    f"🟢 FII Accumulation ({len(fii_accumulation)})",
-    f"🔴 FII Distribution ({len(fii_selling)})",
-    f"🟢 DII Accumulation ({len(dii_accumulation)})",
-    f"🔴 DII Distribution ({len(dii_selling)})"
+    f"FII Accumulation ({len(fii_accumulation)})",
+    f"FII Distribution ({len(fii_selling)})",
+    f"DII Accumulation ({len(dii_accumulation)})",
+    f"DII Distribution ({len(dii_selling)})"
 ])
 
 with tab1:
@@ -380,9 +380,9 @@ with tab1:
         periods_df['Avg Flow (₹ Cr)'] = [f"₹{flow:,.0f}" for flow in avg_flows]
         
         st.dataframe(periods_df, use_container_width=True)
-        st.success(f"✅ Found {len(fii_accumulation)} FII accumulation periods")
+        st.success(f"Found {len(fii_accumulation)} FII accumulation periods")
     else:
-        st.info("ℹ️ No FII accumulation periods detected with current settings. Try adjusting the parameters in the sidebar.")
+        st.info("No FII accumulation periods detected with current settings. Try adjusting the parameters in the sidebar.")
 
 with tab2:
     st.subheader("FII Distribution (Selling) Periods")
@@ -408,9 +408,9 @@ with tab2:
         periods_df['Avg Flow (₹ Cr)'] = [f"₹{flow:,.0f}" for flow in avg_flows]
         
         st.dataframe(periods_df, use_container_width=True)
-        st.warning(f"⚠️ Found {len(fii_selling)} FII distribution periods")
+        st.warning(f"Found {len(fii_selling)} FII distribution periods")
     else:
-        st.info("ℹ️ No FII distribution periods detected with current settings. Try adjusting the parameters in the sidebar.")
+        st.info("No FII distribution periods detected with current settings. Try adjusting the parameters in the sidebar.")
 
 with tab3:
     st.subheader("DII Accumulation Periods")
@@ -436,9 +436,9 @@ with tab3:
         periods_df['Avg Flow (₹ Cr)'] = [f"₹{flow:,.0f}" for flow in avg_flows]
         
         st.dataframe(periods_df, use_container_width=True)
-        st.success(f"✅ Found {len(dii_accumulation)} DII accumulation periods")
+        st.success(f"Found {len(dii_accumulation)} DII accumulation periods")
     else:
-        st.info("ℹ️ No DII accumulation periods detected with current settings. Try adjusting the parameters in the sidebar.")
+        st.info("No DII accumulation periods detected with current settings. Try adjusting the parameters in the sidebar.")
 
 with tab4:
     st.subheader("DII Distribution (Selling) Periods")
@@ -464,14 +464,14 @@ with tab4:
         periods_df['Avg Flow (₹ Cr)'] = [f"₹{flow:,.0f}" for flow in avg_flows]
         
         st.dataframe(periods_df, use_container_width=True)
-        st.warning(f"⚠️ Found {len(dii_selling)} DII distribution periods")
+        st.warning(f"Found {len(dii_selling)} DII distribution periods")
     else:
-        st.info("ℹ️ No DII distribution periods detected with current settings. Try adjusting the parameters in the sidebar.")
+        st.info("No DII distribution periods detected with current settings. Try adjusting the parameters in the sidebar.")
 
 st.markdown("---")
 
 # Correlation Analysis
-st.header("🔗 Correlation Analysis")
+st.header("Correlation Analysis")
 
 # Select columns for correlation
 correlation_columns = ['FII_Net', 'DII_Net']
@@ -495,7 +495,7 @@ fig_corr = plot_correlation_heatmap(
 
 st.plotly_chart(fig_corr, use_container_width=True)
 
-with st.expander("📊 Correlation Insights"):
+with st.expander("Correlation Insights"):
     st.markdown("""
     **Understanding Correlations:**
     
@@ -539,17 +539,17 @@ with st.expander("📊 Correlation Insights"):
         else:
             st.markdown("- FII and DII show **independent behavior**")
     else:
-        st.warning("⚠️ Daily return data not available for correlation analysis.")
+        st.warning("Daily return data not available for correlation analysis.")
 
 st.markdown("---")
 
 # Summary Section
-st.header("📋 Summary & Key Insights")
+st.header("Summary & Key Insights")
 
 summary_col1, summary_col2 = st.columns(2)
 
 with summary_col1:
-    st.markdown("### 🎯 Institutional Behavior")
+    st.markdown("### Institutional Behavior")
     st.markdown(f"""
     **FII (Foreign Institutional Investors):**
     - Total Net Flow: **₹{total_fii_net:,.0f} Cr**
@@ -567,50 +567,50 @@ with summary_col1:
     """)
 
 with summary_col2:
-    st.markdown("### 💡 Key Takeaways")
+    st.markdown("### Key Takeaways")
     
     # Generate dynamic insights
     insights = []
     
     # Net flow insights
     if total_fii_net > 1000 and total_dii_net > 1000:
-        insights.append("🚀 Both FII and DII were strong net buyers - bullish signal")
+        insights.append("Both FII and DII were strong net buyers - bullish signal")
     elif total_fii_net < -1000 and total_dii_net < -1000:
-        insights.append("📉 Both FII and DII were strong net sellers - bearish signal")
+        insights.append("Both FII and DII were strong net sellers - bearish signal")
     elif total_fii_net > 1000 and total_dii_net < -1000:
-        insights.append("🔄 FII buying while DII selling - mixed signals")
+        insights.append("FII buying while DII selling - mixed signals")
     elif total_fii_net < -1000 and total_dii_net > 1000:
-        insights.append("🔄 DII buying while FII selling - mixed signals")
+        insights.append("DII buying while FII selling - mixed signals")
     
     # Consistency insights
     if fii_positive_pct > 70:
-        insights.append("✅ FII showed consistent buying behavior")
+        insights.append("FII showed consistent buying behavior")
     elif fii_positive_pct < 30:
-        insights.append("⚠️ FII showed consistent selling behavior")
+        insights.append("FII showed consistent selling behavior")
     
     if dii_positive_pct > 70:
-        insights.append("✅ DII showed consistent buying behavior")
+        insights.append("DII showed consistent buying behavior")
     elif dii_positive_pct < 30:
-        insights.append("⚠️ DII showed consistent selling behavior")
+        insights.append("DII showed consistent selling behavior")
     
     # Period insights
     if len(fii_accumulation) > len(fii_selling):
-        insights.append("📈 More FII accumulation than distribution periods")
+        insights.append("More FII accumulation than distribution periods")
     elif len(fii_selling) > len(fii_accumulation):
-        insights.append("📉 More FII distribution than accumulation periods")
+        insights.append("More FII distribution than accumulation periods")
     
     # Correlation insights
     if 'Daily_Return' in df_filtered.columns:
         fii_return_corr = df_filtered['FII_Net'].corr(df_filtered['Daily_Return'])
         if abs(fii_return_corr) > 0.3:
-            insights.append(f"🔗 FII flows {'positively' if fii_return_corr > 0 else 'negatively'} correlated with returns")
+            insights.append(f"FII flows {'positively' if fii_return_corr > 0 else 'negatively'} correlated with returns")
     
     if insights:
         for insight in insights:
             st.markdown(f"- {insight}")
     else:
-        st.markdown("- 📊 Institutional activity showing balanced behavior")
-        st.markdown("- 📈 No extreme patterns detected")
+        st.markdown("- Institutional activity showing balanced behavior")
+        st.markdown("- No extreme patterns detected")
 
 # Footer
 st.markdown("---")

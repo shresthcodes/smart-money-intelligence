@@ -26,12 +26,12 @@ from utils.data_loader import load_latest_data
 # Configure page
 st.set_page_config(
     page_title="Sector Analysis - Smart Money Intelligence",
-    page_icon="🏭",
+    page_icon=None,
     layout="wide"
 )
 
 # Page header
-st.title("🏭 Sector Analysis")
+st.title("Sector Analysis")
 st.markdown("Analyze sector-wise performance and institutional flows")
 st.markdown("---")
 
@@ -40,8 +40,8 @@ with st.spinner("Loading data..."):
     df = load_latest_data()
 
 if df is None or df.empty:
-    st.error("❌ Unable to load data. Please ensure the data pipeline has been run.")
-    st.info("💡 Run `python scripts/run_pipeline.py` to generate processed data.")
+    st.error("Unable to load data. Please ensure the data pipeline has been run.")
+    st.info("Run `python scripts/run_pipeline.py` to generate processed data.")
     st.stop()
 
 # Check if sector data is available
@@ -51,10 +51,10 @@ has_sector_data = len(sector_columns) > 0
 
 if not has_sector_data:
     # Display placeholder message when sector data is not available
-    st.info("📊 **Sector Analysis Feature**")
+    st.info("Sector Analysis Feature")
     
     st.markdown("""
-    ### 🔍 About Sector Analysis
+    ### About Sector Analysis
     
     Sector analysis provides insights into how different market sectors are performing
     and where institutional investors are allocating their capital. This helps identify:
@@ -71,7 +71,7 @@ if not has_sector_data:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 📈 Available Features (with sector data)")
+        st.markdown("### Available Features (with sector data)")
         st.markdown("""
         When sector data is available, this page will display:
         
@@ -97,7 +97,7 @@ if not has_sector_data:
         """)
     
     with col2:
-        st.markdown("### 🔧 How to Add Sector Data")
+        st.markdown("### How to Add Sector Data")
         st.markdown("""
         To enable sector analysis, you need to:
         
@@ -123,7 +123,7 @@ if not has_sector_data:
     st.markdown("---")
     
     # Example of what sector data structure should look like
-    st.markdown("### 📋 Expected Sector Data Format")
+    st.markdown("### Expected Sector Data Format")
     
     st.markdown("""
     Your processed data should include columns like:
@@ -146,7 +146,7 @@ if not has_sector_data:
     st.markdown("---")
     
     # Provide sample code for adding sector data
-    st.markdown("### 💻 Sample Code: Adding Sector Data")
+    st.markdown("### Sample Code: Adding Sector Data")
     
     with st.expander("📝 Click to view sample code"):
         st.code("""
@@ -207,7 +207,7 @@ def add_sector_data_to_pipeline(market_df, start_date, end_date):
     st.markdown("---")
     
     # Current data summary
-    st.markdown("### 📊 Current Data Summary")
+    st.markdown("### Current Data Summary")
     
     col_a, col_b, col_c = st.columns(3)
     
@@ -233,7 +233,7 @@ def add_sector_data_to_pipeline(market_df, start_date, end_date):
         )
     
     # Show current columns
-    with st.expander("📋 View Current Data Columns"):
+    with st.expander("View Current Data Columns"):
         st.write("**Available columns in your dataset:**")
         cols_display = pd.DataFrame({
             'Column Name': df.columns,
@@ -245,7 +245,7 @@ def add_sector_data_to_pipeline(market_df, start_date, end_date):
     st.markdown("---")
     
     # Next steps
-    st.markdown("### 🚀 Next Steps")
+    st.markdown("### Next Steps")
     
     st.markdown("""
     To enable sector analysis on this platform:
@@ -261,7 +261,7 @@ def add_sector_data_to_pipeline(market_df, start_date, end_date):
     """)
     
     # Helpful resources
-    st.markdown("### 📚 Helpful Resources")
+    st.markdown("### Helpful Resources")
     
     st.markdown("""
     - [NSE India - Sectoral Indices](https://www.nseindia.com/market-data/live-equity-market)
@@ -271,7 +271,7 @@ def add_sector_data_to_pipeline(market_df, start_date, end_date):
 
 else:
     # If sector data is available, display sector analysis
-    st.success("✅ Sector data detected! Displaying sector analysis...")
+    st.success("Sector data detected! Displaying sector analysis...")
     
     # Ensure Date column is datetime
     if 'Date' in df.columns:
@@ -279,7 +279,7 @@ else:
         df = df.sort_values('Date')
     
     # Date range selector in sidebar
-    st.sidebar.header("📅 Date Range Filter")
+    st.sidebar.header("Date Range Filter")
     
     # Get min and max dates
     min_date = df['Date'].min().date()
@@ -305,7 +305,7 @@ else:
     
     # Validate date range
     if start_date > end_date:
-        st.sidebar.error("❌ Start date must be before end date!")
+        st.sidebar.error("Start date must be before end date!")
         st.stop()
     
     # Filter data by date range
@@ -315,12 +315,12 @@ else:
     ].copy()
     
     if df_filtered.empty:
-        st.warning("⚠️ No data available for the selected date range. Please adjust the dates.")
+        st.warning("No data available for the selected date range. Please adjust the dates.")
         st.stop()
     
     # Display date range info
-    st.sidebar.success(f"✅ Showing data from {start_date} to {end_date}")
-    st.sidebar.info(f"📊 Total trading days: {len(df_filtered)}")
+    st.sidebar.success(f"Showing data from {start_date} to {end_date}")
+    st.sidebar.info(f"Total trading days: {len(df_filtered)}")
     
     # TODO: Implement sector analysis visualizations
     # This section would include:
